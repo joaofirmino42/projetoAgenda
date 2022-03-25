@@ -1,0 +1,139 @@
+<div>
+    <h4>Consulta de Tarefas</h4>
+    <P>
+        Selecione o período de datas para pesquisar tarefas:
+    </P>
+    <hr>
+    <form>
+        <div class="row">
+            <div class="col-md-3">
+                <input type="date" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <input type="date" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <input type="submit" value="Pesquisar Tarefas" class="btn btn-success">
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover mt-4">
+            <thead>
+                <tr>
+                    <th>Nome da tarefa</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Descrição</th>
+                    <th>Prioridade</th>
+                    <th>Operações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listagem | paginate:{itemsPerPage:4, currentPage:pagina}">
+                    <td>{{item.nome | uppercase}}</td>
+                    <td>{{item.data | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item.hora}}</td>
+                    <td>{{item.descricao}}</td>
+                    <td><span class="badge bg-success" *ngIf=" item.prioridade=='1'">
+                            <!-- {{item.prioridade}} -->
+                            BAIXA
+                        </span>
+                    </td>
+                    <td><span class=" badge bg-warning" *ngIf="item.prioridade=='2'">
+                            <!-- {{item.prioridade}} -->
+                            MÉDIA
+                        </span>
+                    </td>
+                    <td><span class="badge bg-danger" *ngIf=" item.prioridade=='3'">
+                            <!-- {{item.prioridade}} -->
+                            ALTA
+                        </span>
+                    </td>
+
+                    <td>
+                        <button class=" btn btn-primary btn-sm" [routerLink]="['/edicao-tarefas',item.idTarefa]">
+                            Editar
+                        </button>
+                        &nbsp;
+                        <button (click)="obterTarefa(item.idTarefa)" data-bs-toggle="modal" data-bs-target="#exclusao"
+                            class="btn btn-danger btn-sm">
+                            Excluir</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr colspan="6">
+                    <td>
+                        Quantidade de tarefas: {{listagem.length}}
+                    </td>
+                </tr>
+
+            </tfoot>
+        </table>
+    </div>
+    <!-- componente de paginação -->
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Página anterior" nextLabel="Próxima página">
+    </pagination-controls>
+</div>
+<div class="modal fade" id="exclusao" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Excluir Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <P>
+                    Deseja realmente excluir a tarefa selecionada?
+                </P>
+                <div class="row">
+                    <div class="col-md-4"> Nome da tarefa:</div>
+                    <div class="col-md-8">
+                        <strong>{{tarefa.nome|uppercase}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"> Data da tarefa:</div>
+                    <div class="col-md-8">
+                        <strong>{{tarefa.data|date: 'dd/MM/yyyy'}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"> Hora da tarefa:</div>
+                    <div class="col-md-8">
+                        <strong>{{tarefa.hora}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"> Descrição da tarefa:</div>
+                    <div class="col-md-8">
+                        <strong>{{tarefa.descricao}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"> Prioridade da tarefa:</div>
+                    <div class="col-md-8">
+                        <span class="badge bg-success" *ngIf="tarefa.prioridade=='1'">
+                            <!-- {{item.prioridade}} -->
+                            BAIXA
+                        </span>
+                        <span class=" badge bg-warning" *ngIf="tarefa.prioridade=='2'">
+                            <!-- {{item.prioridade}} -->
+                            MÉDIA
+                        </span>
+
+                        <span class="badge bg-danger" *ngIf="tarefa.prioridade=='3'">
+                            <!-- {{item.prioridade}} -->
+                            ALTA
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button (click)="excluirTarefa()" type="button" class="btn btn-danger">Confirmar Exclusao</button>
+            </div>
+        </div>
+    </div>
+</div>

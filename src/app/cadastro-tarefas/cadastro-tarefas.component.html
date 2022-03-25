@@ -1,0 +1,80 @@
+<div>
+    <div *ngIf="mensagem" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Sucesso!</strong> {{mensagem}}
+        <button type="button" class="btn-close" (click)="clear()" aria-label="Close"></button>
+    </div>
+    <h4>Cadastro de tarefas</h4>
+    <p>
+        Preencha o formulário abaixo para incluir uma tarefa.
+    </p>
+    <hr>
+    <form autocomplete="off" [formGroup]="formCadastro" (ngSubmit)="onSubmit()">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Nome da tarefa:</label>
+                <input type="text" formControlName="nome" class="form-control" placeholder="Digite aqui">
+                <div class="text-danger" *ngIf="form.nome.touched && form.nome.invalid">
+                    <span *ngIf="form.nome.errors.required">
+                        Por favor, preencha o nome da tarefa.
+                    </span>
+                    <span *ngIf="form.nome.errors.minlength">
+                        Por favor, preencha pelo menos 6 caracteres.
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Data da tarefa:</label>
+                <input type="date" formControlName="data" class="form-control">
+                <div class="text-danger" *ngIf="form.data.touched && form.data.invalid">
+                    <span *ngIf="form.data.errors.required">
+                        Por favor, preencha a data da tarefa
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Hora da tarefa:</label>
+                <input type="time" formControlName="hora" class="form-control">
+                <div class="text-danger" *ngIf="form.hora.touched && form.hora.invalid">
+                    <span *ngIf="form.hora.errors.required">
+                        Por favor, preencha a hora da tarefa
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-9">
+                <label>Descrição da tarefa:</label>
+                <textarea formControlName="descricao" class="form-control"></textarea>
+                <div class="text-danger" *ngIf="form.descricao.touched && form.descricao.invalid">
+                    <span *ngIf="form.descricao.errors.required">
+                        Por favor, preencha a descrição da tarefa.
+                    </span>
+                    <span *ngIf="form.descricao.errors.minlength">
+                        Por favor, preencha pelo menos 10 caracteres.
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Prioridade da tarefa</label>
+                <select class="form-select" formControlName="prioridade">
+                    |<option value="">Escolha uma opção</option>
+                    <option value="1">BAIXA</option>
+                    <option value="2">MEDIA</option>
+                    <option value="3">ALTA</option>
+                </select>
+                <div class="text-danger" *ngIf="form.prioridade.touched && form.prioridade.invalid">
+                    <span *ngIf="form.prioridade.errors.required">
+                        Por favor, selecione a prioridade da tarefa
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="submit" [disabled]="!formCadastro.valid" value="Realizar Cadastro" class="btn btn-success">
+                &nbsp;
+                <input type="button" value="Cancelar" class="btn btn-secondary">
+            </div>
+        </div>
+    </form>
+</div>
